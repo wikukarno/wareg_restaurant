@@ -1,6 +1,6 @@
 # Wareg Restaurant
 
-![Wareg Restaurant — crafted for every screen](docs/preview.png)
+![Wareg Restaurant — crafted for every screen](public/preview.png)
 
 A modern restaurant landing site built with Astro 5, Tailwind v4, and TypeScript. Frontend-only portfolio piece — no backend, mock cart and auth via `nanostores` + `localStorage`.
 
