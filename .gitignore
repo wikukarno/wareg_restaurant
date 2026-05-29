@@ -46,3 +46,8 @@ debug-*.mjs
 debug-*.ts
 debug-*.js
 /screenshots/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
