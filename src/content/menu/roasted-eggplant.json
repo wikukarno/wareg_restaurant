@@ -1,0 +1,10 @@
+{
+  "name": "Roasted Eggplant",
+  "slug": "roasted-eggplant",
+  "category": "vegetable",
+  "price": 42000,
+  "description": "Wood-oven roasted eggplant dressed with garlic, pomegranate molasses, and fresh parsley.",
+  "image": "/images/vege_2.jpg",
+  "rating": 4.7,
+  "tags": ["vegan", "smoky"]
+}

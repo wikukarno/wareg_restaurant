@@ -1,0 +1,32 @@
+---
+import "~/styles/global.css";
+interface Props { title: string; description?: string; }
+const { title, description = "Welcome to Wareg." } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/images/logo/Logo.png" />
+    <title>{title} — Wareg</title>
+    <meta name="description" content={description} />
+  </head>
+  <body class="min-h-dvh grid md:grid-cols-2 bg-[var(--color-bg)] text-[var(--color-ink)]">
+    <aside class="relative hidden md:flex flex-col justify-end p-12 overflow-hidden">
+      <img src="/images/brand_hero.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+      <div class="relative text-white max-w-md">
+        <p class="font-mono text-xs uppercase tracking-widest opacity-80">WAREG.</p>
+        <p class="mt-4 font-display text-3xl leading-snug italic">"Eat like family."</p>
+        <p class="mt-2 text-sm opacity-80">— from our kitchen to your table.</p>
+      </div>
+    </aside>
+    <section class="flex items-center justify-center px-6 py-10 md:py-16">
+      <div class="w-full max-w-md">
+        <a href="/" class="font-display text-2xl font-semibold">WAREG.</a>
+        <div class="mt-10"><slot /></div>
+      </div>
+    </section>
+  </body>
+</html>

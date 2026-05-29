@@ -1,0 +1,172 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Container from "~/components/ui/Container.astro";
+import Button from "~/components/ui/Button.astro";
+import Rating from "~/components/ui/Rating.astro";
+import DishCard from "~/components/sections/DishCard.astro";
+import Icon from "~/components/icons/Icon.astro";
+import { formatIDR } from "~/lib/format";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const items = await getCollection("menu");
+  return items.map((entry) => ({ params: { slug: entry.data.slug }, props: { entry } }));
+}
+
+const { entry } = Astro.props as { entry: import("astro:content").CollectionEntry<"menu"> };
+const all = await getCollection("menu");
+const related = all
+  .filter((i) => i.data.category === entry.data.category && i.data.slug !== entry.data.slug)
+  .slice(0, 4);
+
+const gallery = [
+  entry.data.image,
+  "/images/details/hamburger.jpg",
+  "/images/details/noodle.jpg",
+  "/images/details/juices.jpg",
+];
+---
+<BaseLayout title={entry.data.name} description={entry.data.description}>
+  <section class="pt-8 pb-16 md:pt-12 md:pb-24">
+    <Container>
+      <a href="/menu" class="inline-flex items-center gap-2 text-sm text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]">
+        <Icon name="arrow-left" size={16} /> Back to menu
+      </a>
+      <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
+        <div>
+          <img src={entry.data.image} alt={entry.data.name}
+            data-detail-main
+            class="w-full aspect-square object-cover rounded-3xl shadow-xl" />
+          <div class="mt-4 grid grid-cols-4 gap-3">
+            {gallery.map((src, i) => (
+              <button type="button" data-thumb={src} aria-label={`View image ${i + 1} of ${entry.data.name}`} class="rounded-xl overflow-hidden aspect-square border border-[var(--color-line)] hover:border-[var(--color-amber-500)] transition-colors">
+                <img src={src} alt="" class="w-full h-full object-cover" />
+              </button>
+            ))}
+          </div>
+        </div>
+        <div>
+          <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-amber-600)]">
+            {entry.data.category}
+          </p>
+          <h1 class="mt-3 font-display text-4xl md:text-5xl leading-[1.05]">{entry.data.name}</h1>
+          <div class="mt-3 flex items-center gap-4 text-sm">
+            <Rating value={entry.data.rating} />
+            {entry.data.tags.map((t) => (
+              <span class="text-[var(--color-ink-soft)]">· {t}</span>
+            ))}
+          </div>
+          <div class="mt-6 h-px w-12 bg-[var(--color-ink)]"></div>
+          <p class="mt-6 text-lg text-[var(--color-ink-soft)] leading-relaxed">
+            {entry.data.description}
+          </p>
+          <p class="mt-8 font-mono text-3xl">{formatIDR(entry.data.price)}</p>
+          <div class="mt-6 flex items-center gap-3">
+            <div class="inline-flex items-center gap-3 rounded-full border border-[var(--color-line)] px-4 py-2">
+              <button id="qty-dec" type="button" aria-label="Decrease" class="w-7 h-7 rounded-full hover:bg-[var(--color-amber-50)]">−</button>
+              <span id="qty-val" class="font-mono w-6 text-center" aria-live="polite">1</span>
+              <button id="qty-inc" type="button" aria-label="Increase" class="w-7 h-7 rounded-full hover:bg-[var(--color-amber-50)]">+</button>
+            </div>
+            <Button id="detail-add" type="button" size="lg">Add to cart <Icon name="arrow-right" size={18} /></Button>
+            <button id="detail-fav" type="button" aria-label="Add to favorites" aria-pressed="false" class="inline-flex items-center justify-center w-12 h-12 rounded-full border border-[var(--color-line)] hover:bg-[var(--color-amber-50)] aria-pressed:bg-[var(--color-accent)]/10 aria-pressed:border-[var(--color-accent)] aria-pressed:text-[var(--color-accent)] transition-colors">
+              <Icon name="heart" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  {related.length > 0 && (
+    <section class="pb-20">
+      <Container>
+        <h2 class="font-display text-2xl md:text-3xl">More from {entry.data.category}</h2>
+        <div class="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+          {related.map((r) => (
+            <DishCard slug={r.data.slug} name={r.data.name} price={r.data.price} image={r.data.image} category={r.data.category} />
+          ))}
+        </div>
+      </Container>
+    </section>
+  )}
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "MenuItem",
+    "name": entry.data.name,
+    "description": entry.data.description,
+    "image": new URL(entry.data.image, Astro.site).toString(),
+    "offers": { "@type": "Offer", "price": entry.data.price, "priceCurrency": "IDR" },
+  })}></script>
+</BaseLayout>
+
+<div data-detail-slug={entry.data.slug} hidden></div>
+
+<script>
+  import { addItem } from "~/lib/cart";
+
+  function init() {
+    const slugEl = document.querySelector<HTMLElement>("[data-detail-slug]");
+    if (!slugEl) return;
+    const slug = slugEl.dataset.detailSlug!;
+
+    let qty = 1;
+    const valEl = document.getElementById("qty-val");
+    document.getElementById("qty-inc")?.addEventListener("click", () => {
+      qty += 1;
+      if (valEl) valEl.textContent = String(qty);
+    });
+    document.getElementById("qty-dec")?.addEventListener("click", () => {
+      qty = Math.max(1, qty - 1);
+      if (valEl) valEl.textContent = String(qty);
+    });
+
+    document.getElementById("detail-add")?.addEventListener("click", () => {
+      addItem(slug, qty);
+      window.dispatchEvent(
+        new CustomEvent("toast", { detail: { message: `Added ${qty} × to cart` } })
+      );
+    });
+
+    const FAV_KEY = "wareg:favorites";
+    const readFavs = (): string[] => {
+      try { return JSON.parse(localStorage.getItem(FAV_KEY) ?? "[]"); }
+      catch { return []; }
+    };
+    const writeFavs = (list: string[]) => localStorage.setItem(FAV_KEY, JSON.stringify(list));
+    const favBtn = document.getElementById("detail-fav");
+    if (favBtn) {
+      const setPressed = (pressed: boolean) => {
+        favBtn.setAttribute("aria-pressed", String(pressed));
+        favBtn.setAttribute("aria-label", pressed ? "Remove from favorites" : "Add to favorites");
+      };
+      setPressed(readFavs().includes(slug));
+      favBtn.addEventListener("click", () => {
+        const favs = readFavs();
+        const idx = favs.indexOf(slug);
+        if (idx >= 0) {
+          favs.splice(idx, 1);
+          writeFavs(favs);
+          setPressed(false);
+          window.dispatchEvent(new CustomEvent("toast", { detail: { message: "Removed from favorites" } }));
+        } else {
+          favs.push(slug);
+          writeFavs(favs);
+          setPressed(true);
+          window.dispatchEvent(new CustomEvent("toast", { detail: { message: "Saved to favorites" } }));
+        }
+      });
+    }
+
+    const mainImg = document.querySelector<HTMLImageElement>(
+      `img[data-detail-main]`
+    );
+    document.querySelectorAll<HTMLButtonElement>("[data-thumb]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (mainImg) mainImg.src = btn.dataset.thumb!;
+      });
+    });
+  }
+
+  init();
+</script>

@@ -1,0 +1,46 @@
+---
+import AuthLayout from "~/layouts/AuthLayout.astro";
+import Input from "~/components/ui/Input.astro";
+import Button from "~/components/ui/Button.astro";
+import Icon from "~/components/icons/Icon.astro";
+---
+<AuthLayout title="Create account">
+  <h1 class="font-display text-3xl md:text-4xl">Pull up a chair.</h1>
+  <p class="mt-2 text-[var(--color-ink-soft)]">Create your account in 30 seconds.</p>
+
+  <form id="register-form" class="mt-8 space-y-4" novalidate>
+    <Input id="name" name="name" label="Name" required autocomplete="name" placeholder="Your name" />
+    <Input id="email" name="email" label="Email" type="email" required autocomplete="email" placeholder="you@example.com" />
+    <Input id="password" name="password" label="Password" type="password" required autocomplete="new-password" placeholder="At least 8 characters" />
+    <Input id="confirm" name="confirm" label="Confirm password" type="password" required autocomplete="new-password" placeholder="Repeat password" />
+    <p id="form-error" class="hidden text-sm text-[var(--color-accent)]" role="alert"></p>
+    <Button type="submit" class="w-full" size="lg">Create account <Icon name="arrow-right" size={18} /></Button>
+  </form>
+
+  <p class="mt-8 text-sm text-[var(--color-ink-soft)]">
+    Already with us? <a href="/login" class="text-[var(--color-ink)] underline underline-offset-4 hover:text-[var(--color-amber-600)]">Log in</a>
+  </p>
+</AuthLayout>
+
+<script>
+  import { registerUser } from "~/lib/auth";
+
+  const form = document.getElementById("register-form");
+  const errEl = document.getElementById("form-error");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    errEl.classList.add("hidden");
+    errEl.textContent = "";
+    const fd = new FormData(form);
+    const name = String(fd.get("name") ?? "").trim();
+    const email = String(fd.get("email") ?? "").trim();
+    const password = String(fd.get("password") ?? "");
+    const confirm = String(fd.get("confirm") ?? "");
+    if (!name || !email || !password) { errEl.textContent = "All fields are required."; errEl.classList.remove("hidden"); return; }
+    if (password.length < 8) { errEl.textContent = "Password must be at least 8 characters."; errEl.classList.remove("hidden"); return; }
+    if (password !== confirm) { errEl.textContent = "Passwords don't match."; errEl.classList.remove("hidden"); return; }
+    const res = registerUser({ name, email, password });
+    if (!res.ok) { errEl.textContent = res.error; errEl.classList.remove("hidden"); return; }
+    window.location.href = "/";
+  });
+</script>

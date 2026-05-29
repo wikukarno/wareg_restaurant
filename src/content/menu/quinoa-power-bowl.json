@@ -1,0 +1,10 @@
+{
+  "name": "Quinoa Power Bowl",
+  "slug": "quinoa-power-bowl",
+  "category": "healthy",
+  "price": 65000,
+  "description": "Tricolor quinoa layered with roasted chickpeas, shaved beets, and tahini drizzle.",
+  "image": "/images/healty_2.jpg",
+  "rating": 4.7,
+  "tags": ["vegan", "protein"]
+}

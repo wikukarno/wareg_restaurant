@@ -1,0 +1,10 @@
+{
+  "name": "Protein Plate",
+  "slug": "protein-plate",
+  "category": "healthy",
+  "price": 78000,
+  "description": "A curated plate of grilled chicken, hard-boiled eggs, hummus, and seasonal crudités.",
+  "image": "/images/healty_6.jpg",
+  "rating": 4.7,
+  "tags": ["protein", "balanced"]
+}

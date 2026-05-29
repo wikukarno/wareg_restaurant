@@ -1,0 +1,10 @@
+{
+  "name": "Kale Caesar",
+  "slug": "kale-caesar",
+  "category": "healthy",
+  "price": 62000,
+  "description": "Massaged lacinato kale tossed with house Caesar dressing, sourdough croutons, and anchovy breadcrumbs.",
+  "image": "/images/healty_7.jpg",
+  "rating": 4.7,
+  "tags": ["salad", "light"]
+}

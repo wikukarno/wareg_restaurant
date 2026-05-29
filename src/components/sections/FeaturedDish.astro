@@ -1,0 +1,35 @@
+---
+import Container from "~/components/ui/Container.astro";
+import Button from "~/components/ui/Button.astro";
+import Icon from "~/components/icons/Icon.astro";
+import FadeIn from "~/components/motion/FadeIn.astro";
+import { formatIDR } from "~/lib/format";
+import { getCollection } from "astro:content";
+
+const specials = (await getCollection("menu")).filter((d) => d.data.isSpecial);
+const featured = specials[0];
+---
+{featured && (
+  <section class="py-16 md:py-24 bg-[var(--color-amber-50)]/40">
+    <Container class="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center">
+      <FadeIn>
+        <img src={featured.data.image} alt={featured.data.name}
+          class="w-full aspect-[4/5] object-cover rounded-3xl shadow-xl" />
+      </FadeIn>
+      <FadeIn delay={120}>
+        <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-amber-600)]">
+          THIS WEEK'S CRAFT
+        </p>
+        <h2 class="mt-4 font-display text-4xl md:text-5xl leading-[1.05]">{featured.data.name}</h2>
+        <div class="mt-4 h-px w-12 bg-[var(--color-ink)]"></div>
+        <p class="mt-5 text-lg text-[var(--color-ink-soft)] max-w-md leading-relaxed">
+          {featured.data.description}
+        </p>
+        <div class="mt-7 flex items-center gap-5">
+          <span class="font-mono text-2xl">{formatIDR(featured.data.price)}</span>
+          <Button href={`/menu/${featured.data.slug}`} size="lg">Order <Icon name="arrow-right" size={18} /></Button>
+        </div>
+      </FadeIn>
+    </Container>
+  </section>
+)}

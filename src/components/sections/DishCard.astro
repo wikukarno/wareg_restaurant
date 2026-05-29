@@ -1,0 +1,54 @@
+---
+import { formatIDR } from "~/lib/format";
+import Icon from "~/components/icons/Icon.astro";
+interface Props {
+  slug: string;
+  name: string;
+  price: number;
+  image: string;
+  category?: string;
+}
+const { slug, name, price, image, category } = Astro.props;
+---
+<article class="group">
+  <a href={`/menu/${slug}`} class="block relative overflow-hidden rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] transition-all duration-200 hover:-translate-y-1 hover:shadow-xl">
+    <div class="aspect-square overflow-hidden">
+      <img src={image} alt={name}
+        loading="lazy"
+        transition:name={`dish-${slug}`}
+        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+    </div>
+  </a>
+  <div class="mt-3 flex items-start justify-between gap-2">
+    <div class="min-w-0">
+      <h3 class="font-display text-lg leading-tight truncate">{name}</h3>
+      {category && <p class="text-xs uppercase tracking-wider text-[var(--color-ink-soft)] mt-0.5">{category}</p>}
+    </div>
+    <div class="flex items-center gap-2 shrink-0">
+      <span class="font-mono text-sm">{formatIDR(price)}</span>
+      <button data-add-to-cart={slug} type="button" aria-label={`Add ${name} to cart`}
+        class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[var(--color-amber-500)] text-white hover:bg-[var(--color-amber-600)] transition-colors">
+        <Icon name="plus" size={16} />
+      </button>
+    </div>
+  </div>
+</article>
+
+<script>
+  import { addItem } from "~/lib/cart";
+
+  function handleClick(e: MouseEvent) {
+    const target = (e.target as HTMLElement).closest("[data-add-to-cart]") as HTMLButtonElement | null;
+    if (!target) return;
+    e.preventDefault();
+    const slug = target.dataset.addToCart!;
+    addItem(slug, 1);
+    window.dispatchEvent(new CustomEvent("toast", { detail: { message: "Added to cart" } }));
+  }
+
+  document.addEventListener("click", handleClick);
+  document.addEventListener("astro:after-swap", () => {
+    document.removeEventListener("click", handleClick);
+    document.addEventListener("click", handleClick);
+  });
+</script>

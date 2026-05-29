@@ -1,0 +1,10 @@
+{
+  "name": "Tofu Curry",
+  "slug": "tofu-curry",
+  "category": "vegetable",
+  "price": 43000,
+  "description": "Silken tofu simmered in a fragrant coconut milk curry with lemongrass and kaffir lime leaves.",
+  "image": "/images/vege_5.jpg",
+  "rating": 4.8,
+  "tags": ["spicy", "vegan"]
+}

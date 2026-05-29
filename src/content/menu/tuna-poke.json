@@ -1,0 +1,10 @@
+{
+  "name": "Tuna Poke",
+  "slug": "tuna-poke",
+  "category": "seafood",
+  "price": 88000,
+  "description": "Sashimi-grade ahi tuna cubed and marinated in soy-sesame with cucumber, edamame, and tobiko.",
+  "image": "/images/seafood_3.jpg",
+  "rating": 4.8,
+  "tags": ["raw", "fresh"]
+}

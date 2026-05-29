@@ -1,0 +1,49 @@
+---
+import Container from "~/components/ui/Container.astro";
+import SectionHeading from "~/components/ui/SectionHeading.astro";
+import FadeIn from "~/components/motion/FadeIn.astro";
+import Icon from "~/components/icons/Icon.astro";
+import { getCollection } from "astro:content";
+const chefs = await getCollection("chefs");
+---
+<section id="chefs" class="py-16 md:py-24">
+  <Container>
+    <SectionHeading
+      eyebrow="MEET THE TEAM"
+      title={`<span class="italic">Our chefs</span> behind every plate`}
+      lead="Skilled hands and the kind of taste you can only earn by cooking every day."
+    />
+  </Container>
+  <div class="mt-12 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
+    <ul class="flex gap-4 md:gap-6 px-6 md:px-8 lg:px-12 pb-6">
+      {chefs.map((c, i) => (
+        <li class="snap-start shrink-0 w-[240px] md:w-[280px]">
+          <FadeIn delay={i * 50}>
+            <article class="rounded-2xl overflow-hidden bg-[var(--color-surface)] border border-[var(--color-line)]">
+              <img src={c.data.image} alt={c.data.name} class="w-full aspect-[4/5] object-cover" />
+              <div class="p-4">
+                <div class="flex items-center gap-2">
+                  <p class="font-display text-lg leading-tight">{c.data.name}</p>
+                  {c.data.verified && (
+                    <span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-[var(--color-amber-500)] text-white" aria-label="Verified">
+                      <Icon name="check" size={10} />
+                    </span>
+                  )}
+                </div>
+                <p class="mt-0.5 text-sm text-[var(--color-ink-soft)]">{c.data.title}</p>
+                {c.data.specialty && (
+                  <p class="mt-2 text-xs uppercase tracking-wider text-[var(--color-amber-600)]">{c.data.specialty}</p>
+                )}
+              </div>
+            </article>
+          </FadeIn>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { scrollbar-width: none; }
+</style>

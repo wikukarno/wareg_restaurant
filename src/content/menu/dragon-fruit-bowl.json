@@ -1,0 +1,11 @@
+{
+  "name": "Dragon Fruit Bowl",
+  "slug": "dragon-fruit-bowl",
+  "category": "juice",
+  "price": 65000,
+  "description": "A stunning bowl of pink dragonfruit sorbet layered with tropical fruits, coconut flakes, and house granola.",
+  "image": "/images/sp_4.jpg",
+  "rating": 4.7,
+  "tags": ["cold", "signature"],
+  "isSpecial": true
+}

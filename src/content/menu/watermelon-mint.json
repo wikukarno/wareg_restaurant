@@ -1,0 +1,10 @@
+{
+  "name": "Watermelon Mint",
+  "slug": "watermelon-mint",
+  "category": "juice",
+  "price": 22000,
+  "description": "Freshly squeezed watermelon brightened with garden mint and a squeeze of lime.",
+  "image": "/images/juices_4.jpg",
+  "rating": 4.6,
+  "tags": ["cold", "refreshing"]
+}

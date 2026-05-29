@@ -1,0 +1,28 @@
+---
+import Icon from "~/components/icons/Icon.astro";
+---
+<button id="cart-trigger" type="button" aria-label="Open cart"
+  class="relative inline-flex items-center justify-center w-10 h-10 rounded-full border border-transparent hover:border-[var(--color-line)] hover:bg-[var(--color-amber-50)] transition-colors">
+  <Icon name="cart" />
+  <span id="cart-count" class="hidden absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-[var(--color-amber-500)] text-[10px] font-mono text-white items-center justify-center">0</span>
+</button>
+
+<script>
+  import { cart, totalCount } from "~/lib/cart";
+  import { openCart } from "~/lib/ui-state";
+  const btn = document.getElementById("cart-trigger");
+  const badge = document.getElementById("cart-count");
+  btn?.addEventListener("click", () => openCart());
+  function render() {
+    if (!badge) return;
+    const count = totalCount(cart.get());
+    if (count === 0) badge.classList.add("hidden");
+    else {
+      badge.classList.remove("hidden");
+      badge.classList.add("inline-flex");
+      badge.textContent = String(count);
+    }
+  }
+  render();
+  cart.subscribe(render);
+</script>

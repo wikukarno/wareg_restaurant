@@ -1,0 +1,10 @@
+{
+  "name": "Veggie Burger",
+  "slug": "veggie-burger",
+  "category": "vegetable",
+  "price": 52000,
+  "description": "House-made black bean patty stacked with avocado, pickled red onion, and sriracha aioli.",
+  "image": "/images/vege_8.jpg",
+  "rating": 4.8,
+  "tags": ["vegan", "spicy"]
+}

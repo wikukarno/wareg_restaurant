@@ -1,0 +1,48 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# env files
+.env
+.env.*
+!.env.example
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# editor / IDE
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+.history/
+
+# vite / typescript local cache
+*.local
+*.tsbuildinfo
+
+# deploy platforms
+.vercel/
+.netlify/
+
+# test artifacts
+coverage/
+
+# ad-hoc debug scripts
+debug-*.mjs
+debug-*.ts
+debug-*.js
+/screenshots/

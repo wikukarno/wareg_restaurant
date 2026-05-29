@@ -1,0 +1,10 @@
+{
+  "name": "Spinach Pasta",
+  "slug": "spinach-pasta",
+  "category": "vegetable",
+  "price": 48000,
+  "description": "Hand-rolled spinach tagliatelle tossed with garlic, olive oil, and shaved Parmesan.",
+  "image": "/images/vege_7.jpg",
+  "rating": 4.7,
+  "tags": ["pasta", "light"]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "Grilled Prawns",
+  "slug": "grilled-prawns",
+  "category": "seafood",
+  "price": 115000,
+  "description": "Tiger prawns butterflied and grilled over charcoal with chilli-lime butter and fresh coriander.",
+  "image": "/images/seafood_2.jpg",
+  "rating": 4.8,
+  "tags": ["spicy", "grilled"]
+}

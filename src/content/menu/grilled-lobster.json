@@ -1,0 +1,11 @@
+{
+  "name": "Grilled Lobster",
+  "slug": "grilled-lobster",
+  "category": "seafood",
+  "price": 245000,
+  "description": "Whole live lobster split and grilled with garlic-herb butter, lemon, and served with saffron aioli.",
+  "image": "/images/sp_6.jpg",
+  "rating": 4.9,
+  "tags": ["premium", "signature"],
+  "isSpecial": true
+}

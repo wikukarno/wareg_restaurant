@@ -1,0 +1,10 @@
+{
+  "name": "Avocado Toast",
+  "slug": "avocado-toast",
+  "category": "healthy",
+  "price": 55000,
+  "description": "Thick sourdough topped with smashed avocado, everything seasoning, and a soft-poached egg.",
+  "image": "/images/healty_4.jpg",
+  "rating": 4.6,
+  "tags": ["breakfast", "light"]
+}

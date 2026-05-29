@@ -1,0 +1,10 @@
+{
+  "name": "Acai Bowl",
+  "slug": "acai-bowl",
+  "category": "healthy",
+  "price": 58000,
+  "description": "Frozen acai blended thick and topped with house granola, banana slices, and local honey.",
+  "image": "/images/healty_5.jpg",
+  "rating": 4.8,
+  "tags": ["breakfast", "fruit"]
+}

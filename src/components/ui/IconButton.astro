@@ -1,0 +1,15 @@
+---
+interface Props {
+  href?: string;
+  label: string;
+  class?: string;
+  type?: "button" | "submit" | "reset";
+}
+const { href, label, class: className = "", type = "button" } = Astro.props;
+const base = "inline-flex items-center justify-center w-10 h-10 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] hover:bg-[var(--color-amber-50)] hover:border-[var(--color-amber-500)] transition-colors";
+---
+{href ? (
+  <a href={href} class={`${base} ${className}`} aria-label={label}><slot /></a>
+) : (
+  <button type={type} class={`${base} ${className}`} aria-label={label}><slot /></button>
+)}

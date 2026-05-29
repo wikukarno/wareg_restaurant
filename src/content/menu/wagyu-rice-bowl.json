@@ -1,0 +1,11 @@
+{
+  "name": "Wagyu Rice Bowl",
+  "slug": "wagyu-rice-bowl",
+  "category": "healthy",
+  "price": 175000,
+  "description": "A5 Wagyu beef sliced thin over warm steamed rice with truffle ponzu and pickled ginger.",
+  "image": "/images/sp_2.jpg",
+  "rating": 4.9,
+  "tags": ["premium", "signature"],
+  "isSpecial": true
+}

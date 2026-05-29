@@ -1,0 +1,10 @@
+{
+  "name": "Pineapple Ginger",
+  "slug": "pineapple-ginger",
+  "category": "juice",
+  "price": 24000,
+  "description": "Tangy fresh pineapple juice kicked with cold-pressed ginger and turmeric.",
+  "image": "/images/juices_6.jpg",
+  "rating": 4.7,
+  "tags": ["spicy", "detox"]
+}

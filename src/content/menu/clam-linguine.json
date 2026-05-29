@@ -1,0 +1,10 @@
+{
+  "name": "Clam Linguine",
+  "slug": "clam-linguine",
+  "category": "seafood",
+  "price": 95000,
+  "description": "Bronzed linguine steamed open with littleneck clams in white wine, garlic, and fresh parsley.",
+  "image": "/images/seafood_5.jpg",
+  "rating": 4.8,
+  "tags": ["pasta", "signature"]
+}

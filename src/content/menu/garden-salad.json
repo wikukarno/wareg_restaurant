@@ -1,0 +1,10 @@
+{
+  "name": "Garden Salad",
+  "slug": "garden-salad",
+  "category": "vegetable",
+  "price": 38000,
+  "description": "Crisp seasonal greens tossed with cherry tomatoes, cucumber, and a light lemon vinaigrette.",
+  "image": "/images/vege_1.jpg",
+  "rating": 4.6,
+  "tags": ["vegan", "light"]
+}

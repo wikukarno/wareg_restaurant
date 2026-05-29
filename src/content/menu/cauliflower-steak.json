@@ -1,0 +1,10 @@
+{
+  "name": "Cauliflower Steak",
+  "slug": "cauliflower-steak",
+  "category": "vegetable",
+  "price": 55000,
+  "description": "Thick-cut cauliflower seared golden and finished with chimichurri and toasted pine nuts.",
+  "image": "/images/vege_6.jpg",
+  "rating": 4.9,
+  "tags": ["vegan", "chef pick"]
+}

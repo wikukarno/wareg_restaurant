@@ -1,0 +1,10 @@
+{
+  "name": "Salmon Teriyaki",
+  "slug": "salmon-teriyaki",
+  "category": "seafood",
+  "price": 98000,
+  "description": "Atlantic salmon glazed with house teriyaki sauce and served with steamed rice and pickled daikon.",
+  "image": "/images/seafood_8.jpg",
+  "rating": 4.8,
+  "tags": ["grilled", "balanced"]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Vegan Feast",
+  "slug": "vegan-feast",
+  "category": "vegetable",
+  "price": 110000,
+  "description": "A generous spread of six rotating plant-based dishes — perfect for sharing and exploring the full vegan menu.",
+  "image": "/images/sp_7.jpg",
+  "rating": 4.8,
+  "tags": ["vegan", "sharing"],
+  "isSpecial": true
+}

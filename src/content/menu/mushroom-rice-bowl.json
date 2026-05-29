@@ -1,0 +1,10 @@
+{
+  "name": "Mushroom Rice Bowl",
+  "slug": "mushroom-rice-bowl",
+  "category": "vegetable",
+  "price": 45000,
+  "description": "Sautéed shiitake and oyster mushrooms over steamed jasmine rice with a savory umami glaze.",
+  "image": "/images/vege_3.jpg",
+  "rating": 4.8,
+  "tags": ["umami", "vegan"]
+}

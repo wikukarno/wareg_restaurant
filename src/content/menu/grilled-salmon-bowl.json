@@ -1,0 +1,10 @@
+{
+  "name": "Grilled Salmon Bowl",
+  "slug": "grilled-salmon-bowl",
+  "category": "healthy",
+  "price": 89000,
+  "description": "Norwegian salmon fillet grilled to a perfect medium with brown rice, edamame, and miso dressing.",
+  "image": "/images/healty_1.jpg",
+  "rating": 4.9,
+  "tags": ["protein", "signature"]
+}

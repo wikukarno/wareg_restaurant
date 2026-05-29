@@ -1,0 +1,10 @@
+{
+  "name": "Crab Cakes",
+  "slug": "crab-cakes",
+  "category": "seafood",
+  "price": 105000,
+  "description": "Jumbo lump crab cakes pan-seared golden with Old Bay aioli and a crisp micro-herb salad.",
+  "image": "/images/seafood_6.jpg",
+  "rating": 4.9,
+  "tags": ["grilled", "chef pick"]
+}

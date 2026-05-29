@@ -1,0 +1,16 @@
+---
+interface Props { value: number; max?: number; showNumber?: boolean; class?: string; }
+const { value, max = 5, showNumber = true, class: className = "" } = Astro.props;
+const rounded = Math.round(value * 10) / 10;
+const filled = Math.round(value);
+---
+<div class={`inline-flex items-center gap-1.5 ${className}`} role="img" aria-label={`Rated ${rounded} out of ${max}`}>
+  <span class="flex" aria-hidden="true">
+    {Array.from({ length: max }).map((_, i) => (
+      <svg width="14" height="14" viewBox="0 0 20 20" fill={i < filled ? "var(--color-amber-500)" : "var(--color-line)"} xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 1l2.7 5.7 6.3.9-4.6 4.4 1.1 6.2L10 15.3l-5.6 2.9 1.1-6.2L1 8l6.3-.9L10 1z"/>
+      </svg>
+    ))}
+  </span>
+  {showNumber && <span class="text-xs font-mono text-[var(--color-ink-soft)]">{rounded.toFixed(1)}</span>}
+</div>

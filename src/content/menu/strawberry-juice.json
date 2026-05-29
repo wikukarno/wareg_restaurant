@@ -1,0 +1,10 @@
+{
+  "name": "Strawberry Juice",
+  "slug": "strawberry-juice",
+  "category": "juice",
+  "price": 23000,
+  "description": "Cold-pressed strawberries with a touch of honey, served over crushed ice.",
+  "image": "/images/juices_1.jpg",
+  "rating": 4.8,
+  "tags": ["cold", "fruit"]
+}

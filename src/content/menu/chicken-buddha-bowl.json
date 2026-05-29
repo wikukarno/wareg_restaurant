@@ -1,0 +1,10 @@
+{
+  "name": "Chicken Buddha Bowl",
+  "slug": "chicken-buddha-bowl",
+  "category": "healthy",
+  "price": 72000,
+  "description": "Herb-marinated grilled chicken sliced over farro with roasted sweet potato and green goddess dressing.",
+  "image": "/images/healty_3.jpg",
+  "rating": 4.8,
+  "tags": ["protein", "balanced"]
+}

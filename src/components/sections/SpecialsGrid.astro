@@ -1,0 +1,30 @@
+---
+import Container from "~/components/ui/Container.astro";
+import SectionHeading from "~/components/ui/SectionHeading.astro";
+import DishCard from "~/components/sections/DishCard.astro";
+import FadeIn from "~/components/motion/FadeIn.astro";
+import { getCollection } from "astro:content";
+
+const specials = (await getCollection("menu")).filter((d) => d.data.isSpecial);
+---
+<section class="py-16 md:py-24">
+  <Container>
+    <SectionHeading
+      eyebrow="THIS SEASON"
+      title={`<span>Special</span> in our restaurant`}
+      lead="Eight signature plates the kitchen is most proud of."
+    />
+    <div class="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+      {specials.map((s, i) => (
+        <FadeIn delay={i * 60}>
+          <DishCard
+            slug={s.data.slug}
+            name={s.data.name}
+            price={s.data.price}
+            image={s.data.image}
+          />
+        </FadeIn>
+      ))}
+    </div>
+  </Container>
+</section>

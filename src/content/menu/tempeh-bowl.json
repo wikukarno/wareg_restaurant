@@ -1,0 +1,10 @@
+{
+  "name": "Tempeh Bowl",
+  "slug": "tempeh-bowl",
+  "category": "vegetable",
+  "price": 40000,
+  "description": "Crispy marinated tempeh served over brown rice with pickled vegetables and peanut dressing.",
+  "image": "/images/vege_4.jpg",
+  "rating": 4.7,
+  "tags": ["vegan", "signature"]
+}

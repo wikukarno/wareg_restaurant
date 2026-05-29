@@ -1,0 +1,10 @@
+{
+  "name": "Berry Blast",
+  "slug": "berry-blast",
+  "category": "juice",
+  "price": 29000,
+  "description": "A trio of blueberries, raspberries, and blackberries blended into a deep antioxidant punch.",
+  "image": "/images/juices_8.jpg",
+  "rating": 4.9,
+  "tags": ["cold", "fruit"]
+}

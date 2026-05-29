@@ -1,0 +1,10 @@
+{
+  "name": "Roasted Veggie Wrap",
+  "slug": "roasted-veggie-wrap",
+  "category": "healthy",
+  "price": 49000,
+  "description": "Whole-wheat wrap filled with smoky roasted peppers, zucchini, feta, and herb yogurt sauce.",
+  "image": "/images/healty_8.jpg",
+  "rating": 4.6,
+  "tags": ["vegan", "light"]
+}

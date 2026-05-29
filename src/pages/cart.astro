@@ -1,0 +1,130 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Container from "~/components/ui/Container.astro";
+import Button from "~/components/ui/Button.astro";
+import Icon from "~/components/icons/Icon.astro";
+import { getCollection } from "astro:content";
+const all = await getCollection("menu");
+const catalog = all.map((i) => ({ slug: i.data.slug, name: i.data.name, price: i.data.price, image: i.data.image }));
+---
+<BaseLayout title="Cart" description="Your cart">
+  <section class="pt-8 pb-24">
+    <Container>
+      <div class="flex items-end justify-between">
+        <h1 class="font-display text-4xl md:text-5xl">Your cart</h1>
+        <p id="cart-count-label" class="text-sm text-[var(--color-ink-soft)]"></p>
+      </div>
+      <div class="mt-10 grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-10">
+        <div id="cart-lines" class="space-y-3"></div>
+        <aside class="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 h-fit lg:sticky lg:top-24">
+          <p class="font-display text-xl">Order summary</p>
+          <dl class="mt-5 space-y-2 text-sm">
+            <div class="flex justify-between"><dt class="text-[var(--color-ink-soft)]">Subtotal</dt><dd id="sum-subtotal" class="font-mono">Rp 0</dd></div>
+            <div class="flex justify-between"><dt class="text-[var(--color-ink-soft)]">Delivery</dt><dd id="sum-delivery" class="font-mono">Rp 15.000</dd></div>
+            <div class="flex justify-between pt-2 border-t border-[var(--color-line)]"><dt>Total</dt><dd id="sum-total" class="font-mono text-base">Rp 15.000</dd></div>
+          </dl>
+          <Button id="checkout-btn" class="mt-6 w-full" size="lg">Checkout <Icon name="arrow-right" size={18} /></Button>
+        </aside>
+      </div>
+    </Container>
+  </section>
+  <script type="application/json" id="cart-catalog" set:html={JSON.stringify(catalog)}></script>
+</BaseLayout>
+
+<script>
+  import { cart, removeItem, setQty, clearCart, totalCount } from "~/lib/cart";
+  import { formatIDR } from "~/lib/format";
+
+  type CatalogItem = { slug: string; name: string; price: number; image: string };
+  const catalogEl = document.getElementById("cart-catalog");
+  const catalog: CatalogItem[] = catalogEl ? JSON.parse(catalogEl.textContent || "[]") : [];
+
+  const linesEl = document.getElementById("cart-lines")!;
+  const countLabel = document.getElementById("cart-count-label")!;
+  const sumSub = document.getElementById("sum-subtotal")!;
+  const sumDel = document.getElementById("sum-delivery")!;
+  const sumTot = document.getElementById("sum-total")!;
+  const checkoutBtn = document.getElementById("checkout-btn") as HTMLButtonElement | null;
+  const DELIVERY = 15000;
+
+  function render() {
+    const items = cart.get().items;
+    countLabel.textContent = items.length === 0 ? "" : `${totalCount(cart.get())} items`;
+
+    if (items.length === 0) {
+      linesEl.innerHTML = `
+        <div class="rounded-2xl border border-dashed border-[var(--color-line)] p-12 text-center">
+          <p class="font-display text-2xl">Your table is empty.</p>
+          <p class="mt-2 text-[var(--color-ink-soft)]">Pick something warm.</p>
+          <a href="/menu" class="mt-6 inline-flex rounded-full bg-[var(--color-amber-500)] text-white px-5 py-2.5 text-sm">Browse menu →</a>
+        </div>`;
+      sumSub.textContent = formatIDR(0);
+      sumDel.textContent = formatIDR(0);
+      sumTot.textContent = formatIDR(0);
+      if (checkoutBtn) checkoutBtn.disabled = true;
+      return;
+    }
+
+    let subtotal = 0;
+    linesEl.innerHTML = items.map((line) => {
+      const dish = catalog.find((d) => d.slug === line.slug);
+      if (!dish) return "";
+      subtotal += dish.price * line.qty;
+      return `
+        <div class="flex gap-4 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+          <img src="${dish.image}" alt="" class="w-20 h-20 rounded-xl object-cover" />
+          <div class="flex-1 min-w-0">
+            <a href="/menu/${dish.slug}" class="font-display text-lg leading-tight hover:text-[var(--color-amber-600)]">${dish.name}</a>
+            <p class="text-xs font-mono text-[var(--color-ink-soft)] mt-0.5">${formatIDR(dish.price)} each</p>
+            <div class="mt-3 inline-flex items-center gap-2">
+              <button data-act="dec" data-slug="${line.slug}" aria-label="Decrease quantity of ${dish.name}" class="w-8 h-8 rounded-full border border-[var(--color-line)] hover:bg-[var(--color-amber-50)]">−</button>
+              <span class="font-mono w-6 text-center" aria-label="${dish.name} quantity">${line.qty}</span>
+              <button data-act="inc" data-slug="${line.slug}" aria-label="Increase quantity of ${dish.name}" class="w-8 h-8 rounded-full border border-[var(--color-line)] hover:bg-[var(--color-amber-50)]">+</button>
+            </div>
+          </div>
+          <div class="flex flex-col items-end justify-between">
+            <button data-act="rm" data-slug="${line.slug}" aria-label="Remove ${dish.name} from cart" class="text-[var(--color-ink-soft)] hover:text-[var(--color-accent)]">✕</button>
+            <p class="font-mono text-base">${formatIDR(dish.price * line.qty)}</p>
+          </div>
+        </div>`;
+    }).join("");
+
+    sumSub.textContent = formatIDR(subtotal);
+    sumDel.textContent = formatIDR(DELIVERY);
+    sumTot.textContent = formatIDR(subtotal + DELIVERY);
+    if (checkoutBtn) checkoutBtn.disabled = false;
+  }
+
+  linesEl.addEventListener("click", (e) => {
+    const btn = (e.target as HTMLElement).closest("button[data-act]") as HTMLButtonElement | null;
+    if (!btn) return;
+    const slug = btn.dataset.slug!;
+    const act = btn.dataset.act!;
+    const current = cart.get().items.find((i) => i.slug === slug);
+    if (!current) return;
+    if (act === "inc") setQty(slug, current.qty + 1);
+    if (act === "dec") setQty(slug, current.qty - 1);
+    if (act === "rm") removeItem(slug);
+  });
+
+  checkoutBtn?.addEventListener("click", () => {
+    const items = cart.get().items;
+    if (items.length === 0) return;
+    let subtotal = 0;
+    const detailed = items.map((l) => {
+      const dish = catalog.find((d) => d.slug === l.slug)!;
+      subtotal += dish.price * l.qty;
+      return { ...l, name: dish.name, price: dish.price, image: dish.image };
+    });
+    const orderId = `WRG-${Math.floor(Math.random() * 90000 + 10000)}`;
+    const etaMinutes = 25 + Math.floor(Math.random() * 16);
+    localStorage.setItem("wareg:lastOrder", JSON.stringify({
+      orderId, etaMinutes, subtotal, delivery: DELIVERY, total: subtotal + DELIVERY, items: detailed, placedAt: Date.now(),
+    }));
+    clearCart();
+    window.location.href = "/cart/done";
+  });
+
+  render();
+  cart.subscribe(render);
+</script>

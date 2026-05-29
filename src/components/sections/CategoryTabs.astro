@@ -1,0 +1,81 @@
+---
+import Container from "~/components/ui/Container.astro";
+import SectionHeading from "~/components/ui/SectionHeading.astro";
+import DishCard from "~/components/sections/DishCard.astro";
+import FadeIn from "~/components/motion/FadeIn.astro";
+import { getCollection } from "astro:content";
+import type { Category } from "~/lib/data";
+
+const all = await getCollection("menu");
+const categories: { id: Category; label: string }[] = [
+  { id: "juice", label: "Juice" },
+  { id: "vegetable", label: "Vegetable" },
+  { id: "healthy", label: "Healthy" },
+  { id: "seafood", label: "Seafood" },
+];
+const byCategory: Record<Category, typeof all> = {
+  juice: all.filter((i) => i.data.category === "juice"),
+  vegetable: all.filter((i) => i.data.category === "vegetable"),
+  healthy: all.filter((i) => i.data.category === "healthy"),
+  seafood: all.filter((i) => i.data.category === "seafood"),
+};
+---
+<section id="categories" class="py-16 md:py-24">
+  <Container>
+    <SectionHeading
+      align="center"
+      eyebrow="ALL MENU"
+      title={`Category <span class="italic">meals & beverages</span>`}
+      lead="Pick a category, find your craving."
+      class="mx-auto"
+    />
+    <div class="mt-10 flex flex-wrap items-center justify-center gap-2" role="tablist" aria-label="Menu categories">
+      {categories.map((c, i) => (
+        <button
+          type="button"
+          role="tab"
+          id={`tab-${c.id}`}
+          aria-selected={i === 0 ? "true" : "false"}
+          aria-controls={`panel-${c.id}`}
+          data-tab={c.id}
+          class="rounded-full px-5 py-2 text-sm border border-[var(--color-line)] hover:bg-[var(--color-amber-50)] aria-selected:bg-[var(--color-ink)] aria-selected:text-white aria-selected:border-[var(--color-ink)] transition-colors"
+        >
+          {c.label}
+        </button>
+      ))}
+    </div>
+    {categories.map((c, i) => (
+      <div
+        id={`panel-${c.id}`}
+        role="tabpanel"
+        aria-labelledby={`tab-${c.id}`}
+        hidden={i !== 0}
+        class="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
+      >
+        {byCategory[c.id].map((dish, j) => (
+          <FadeIn delay={j * 50}>
+            <DishCard slug={dish.data.slug} name={dish.data.name} price={dish.data.price} image={dish.data.image} />
+          </FadeIn>
+        ))}
+      </div>
+    ))}
+  </Container>
+</section>
+
+<script>
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-tab]"));
+  const panels = tabs.map((t) => document.getElementById(`panel-${t.dataset.tab}`)) as HTMLElement[];
+
+  function select(idx: number) {
+    tabs.forEach((t, i) => t.setAttribute("aria-selected", String(i === idx)));
+    panels.forEach((p, i) => (p.hidden = i !== idx));
+    tabs[idx]?.focus();
+  }
+  tabs.forEach((t, i) => t.addEventListener("click", () => select(i)));
+  tabs.forEach((t, i) =>
+    t.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight") select((i + 1) % tabs.length);
+      if (e.key === "ArrowLeft") select((i - 1 + tabs.length) % tabs.length);
+    })
+  );
+</script>

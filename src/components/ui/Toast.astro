@@ -1,0 +1,26 @@
+<div id="toast" role="status" aria-live="polite"
+  class="pointer-events-none fixed top-6 right-6 z-[60] -translate-y-4 opacity-0 transition-all duration-200 ease-out"
+>
+  <div class="rounded-full bg-[var(--color-ink)] text-white text-sm px-4 py-2.5 shadow-xl">
+    <span id="toast-message"></span>
+  </div>
+</div>
+
+<script>
+  const el = document.getElementById("toast");
+  const msgEl = document.getElementById("toast-message");
+  let hideTimer: ReturnType<typeof setTimeout> | undefined;
+
+  window.addEventListener("toast", (event) => {
+    if (!el || !msgEl) return;
+    const detail = (event as CustomEvent<{ message: string }>).detail;
+    msgEl.textContent = detail.message;
+    el.classList.remove("opacity-0", "-translate-y-4");
+    el.classList.add("opacity-100", "translate-y-0");
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => {
+      el.classList.remove("opacity-100", "translate-y-0");
+      el.classList.add("opacity-0", "-translate-y-4");
+    }, 2500);
+  });
+</script>

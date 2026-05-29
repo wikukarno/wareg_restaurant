@@ -1,0 +1,10 @@
+{
+  "name": "Seafood Paella",
+  "slug": "seafood-paella",
+  "category": "seafood",
+  "price": 145000,
+  "description": "Traditional Valencian-style saffron rice loaded with prawns, mussels, squid, and clams.",
+  "image": "/images/seafood_1.jpg",
+  "rating": 4.9,
+  "tags": ["signature", "sharing"]
+}

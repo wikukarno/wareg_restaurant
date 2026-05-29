@@ -1,0 +1,15 @@
+---
+interface Props {
+  variant?: "neutral" | "success" | "accent";
+  class?: string;
+}
+const { variant = "neutral", class: className = "" } = Astro.props;
+const styles = {
+  neutral: "bg-[var(--color-amber-50)] text-[var(--color-ink)]",
+  success: "bg-[var(--color-success)]/10 text-[var(--color-success)]",
+  accent: "bg-[var(--color-accent)]/10 text-[var(--color-accent)]",
+};
+---
+<span class={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${styles[variant]} ${className}`}>
+  <slot />
+</span>

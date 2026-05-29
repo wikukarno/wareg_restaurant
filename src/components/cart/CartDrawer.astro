@@ -1,0 +1,115 @@
+---
+import Icon from "~/components/icons/Icon.astro";
+---
+<div id="cart-drawer" aria-hidden="true" class="fixed inset-0 z-[55] pointer-events-none">
+  <button id="cart-backdrop" tabindex="-1" aria-label="Close cart"
+    class="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-200">
+  </button>
+  <aside class="absolute top-0 right-0 h-dvh w-full sm:w-[420px] translate-x-full transition-transform duration-300 ease-out bg-[var(--color-surface)] shadow-2xl flex flex-col"
+    id="cart-drawer-panel" role="dialog" aria-label="Cart" aria-modal="true">
+    <header class="flex items-center justify-between px-6 h-16 border-b border-[var(--color-line)]">
+      <p class="font-display text-xl">Your cart</p>
+      <button id="cart-close" type="button" aria-label="Close cart"
+        class="inline-flex items-center justify-center w-9 h-9 rounded-full hover:bg-[var(--color-amber-50)]">
+        <Icon name="close" />
+      </button>
+    </header>
+    <div id="cart-drawer-body" class="flex-1 overflow-y-auto px-6 py-4 space-y-3"></div>
+    <footer class="border-t border-[var(--color-line)] px-6 py-5 space-y-3">
+      <div class="flex items-baseline justify-between text-sm">
+        <span class="text-[var(--color-ink-soft)]">Subtotal</span>
+        <span id="cart-subtotal" class="font-mono text-base">Rp 0</span>
+      </div>
+      <a href="/cart" class="inline-flex w-full items-center justify-center rounded-full bg-[var(--color-amber-500)] text-white px-5 py-3 text-sm font-medium hover:bg-[var(--color-amber-600)] transition-colors">
+        View cart →
+      </a>
+    </footer>
+  </aside>
+</div>
+
+<script>
+  import { cart, removeItem, setQty } from "~/lib/cart";
+  import { cartOpen, closeCart } from "~/lib/ui-state";
+  import { formatIDR } from "~/lib/format";
+
+  const root = document.getElementById("cart-drawer")!;
+  const backdrop = document.getElementById("cart-backdrop")!;
+  const panel = document.getElementById("cart-drawer-panel")!;
+  const closeBtn = document.getElementById("cart-close")!;
+  const body = document.getElementById("cart-drawer-body")!;
+  const subtotalEl = document.getElementById("cart-subtotal")!;
+
+  type DishLite = { slug: string; name: string; price: number; image: string };
+  let catalog: DishLite[] = [];
+
+  async function loadCatalog() {
+    const modules = import.meta.glob("../../content/menu/*.json", { eager: true });
+    catalog = Object.values(modules).map((m) => (m as { default: DishLite }).default ?? (m as DishLite));
+  }
+
+  function openPanel() {
+    root.classList.remove("pointer-events-none");
+    root.setAttribute("aria-hidden", "false");
+    backdrop.style.opacity = "1";
+    panel.classList.remove("translate-x-full");
+    document.body.style.overflow = "hidden";
+  }
+  function closePanel() {
+    root.classList.add("pointer-events-none");
+    root.setAttribute("aria-hidden", "true");
+    backdrop.style.opacity = "0";
+    panel.classList.add("translate-x-full");
+    document.body.style.overflow = "";
+  }
+  backdrop.addEventListener("click", () => closeCart());
+  closeBtn.addEventListener("click", () => closeCart());
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeCart(); });
+  cartOpen.subscribe((v) => (v ? openPanel() : closePanel()));
+
+  function render() {
+    const items = cart.get().items;
+    if (items.length === 0) {
+      body.innerHTML = `<p class="text-sm text-[var(--color-ink-soft)] py-8 text-center">Your table is empty.</p>`;
+      subtotalEl.textContent = formatIDR(0);
+      return;
+    }
+    let subtotal = 0;
+    body.innerHTML = items
+      .map((line) => {
+        const dish = catalog.find((d) => d.slug === line.slug);
+        if (!dish) return "";
+        subtotal += dish.price * line.qty;
+        return `
+          <div class="flex gap-3 py-3 border-b border-[var(--color-line)] last:border-0">
+            <img src="${dish.image}" alt="" class="w-16 h-16 rounded-lg object-cover" />
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium truncate">${dish.name}</p>
+              <p class="text-xs font-mono text-[var(--color-ink-soft)]">${formatIDR(dish.price)}</p>
+              <div class="mt-2 inline-flex items-center gap-2 text-sm">
+                <button data-act="dec" data-slug="${line.slug}" aria-label="Decrease quantity of ${dish.name}" class="w-7 h-7 rounded-full border border-[var(--color-line)] hover:bg-[var(--color-amber-50)]">−</button>
+                <span class="font-mono w-6 text-center" aria-label="${dish.name} quantity">${line.qty}</span>
+                <button data-act="inc" data-slug="${line.slug}" aria-label="Increase quantity of ${dish.name}" class="w-7 h-7 rounded-full border border-[var(--color-line)] hover:bg-[var(--color-amber-50)]">+</button>
+                <button data-act="rm" data-slug="${line.slug}" aria-label="Remove ${dish.name} from cart" class="ml-2 text-xs text-[var(--color-accent)] underline">Remove</button>
+              </div>
+            </div>
+          </div>`;
+      })
+      .join("");
+    subtotalEl.textContent = formatIDR(subtotal);
+  }
+
+  body.addEventListener("click", (e) => {
+    const target = (e.target as HTMLElement).closest("button[data-act]") as HTMLButtonElement | null;
+    if (!target) return;
+    const slug = target.dataset.slug!;
+    const act = target.dataset.act!;
+    const current = cart.get().items.find((i) => i.slug === slug);
+    if (!current) return;
+    if (act === "inc") setQty(slug, current.qty + 1);
+    if (act === "dec") setQty(slug, current.qty - 1);
+    if (act === "rm") removeItem(slug);
+  });
+
+  loadCatalog().then(render);
+  cart.subscribe(render);
+</script>

@@ -1,0 +1,62 @@
+---
+import CartIcon from "~/components/nav/CartIcon.astro";
+import MobileMenu from "~/components/nav/MobileMenu.astro";
+import IconButton from "~/components/ui/IconButton.astro";
+import Icon from "~/components/icons/Icon.astro";
+---
+<header id="site-nav" class="sticky top-0 z-50 border-b border-transparent transition-all duration-200">
+  <div class="mx-auto w-full max-w-7xl px-6 md:px-8 lg:px-12 h-16 flex items-center gap-4">
+    <a href="/" class="font-display text-2xl font-semibold tracking-tight">WAREG.</a>
+    <nav class="hidden md:flex items-center gap-1 mx-auto" aria-label="Primary">
+      <a href="/menu" class="px-3 py-2 text-sm hover:text-[var(--color-amber-600)] transition-colors">Menu</a>
+      <a href="/#story" class="px-3 py-2 text-sm hover:text-[var(--color-amber-600)] transition-colors">Story</a>
+      <a href="/#chefs" class="px-3 py-2 text-sm hover:text-[var(--color-amber-600)] transition-colors">Chefs</a>
+      <a href="/#reviews" class="px-3 py-2 text-sm hover:text-[var(--color-amber-600)] transition-colors">Reviews</a>
+    </nav>
+    <div class="ml-auto md:ml-0 flex items-center gap-1">
+      <IconButton href="/menu" label="Search menu" class="hidden md:inline-flex"><Icon name="search" /></IconButton>
+      <CartIcon />
+      <a href="/login" class="hidden md:inline-flex text-sm px-3 py-2 hover:text-[var(--color-amber-600)] transition-colors">Log in</a>
+      <a href="/register" class="hidden md:inline-flex text-sm bg-[var(--color-amber-500)] text-white rounded-full px-4 py-2 hover:bg-[var(--color-amber-600)] transition-colors">Sign up</a>
+      <MobileMenu />
+    </div>
+  </div>
+</header>
+
+<script>
+  function applyNavStyle() {
+    const nav = document.getElementById("site-nav");
+    if (!nav) return;
+    if (window.scrollY > 80) {
+      nav.classList.add("backdrop-blur-md", "bg-[var(--color-bg)]/85", "border-[var(--color-line)]");
+    } else {
+      nav.classList.remove("backdrop-blur-md", "bg-[var(--color-bg)]/85", "border-[var(--color-line)]");
+    }
+  }
+  applyNavStyle();
+  document.addEventListener("scroll", applyNavStyle, { passive: true });
+  document.addEventListener("astro:after-swap", applyNavStyle);
+</script>
+
+<script>
+  import { authState, logout } from "~/lib/auth";
+  function render() {
+    const user = authState.get();
+    const loginLink = document.querySelector("a[href='/login']");
+    const signupLink = document.querySelector("a[href='/register']");
+    if (!loginLink || !signupLink) return;
+    if (user) {
+      loginLink.textContent = `Hi, ${user.name.split(" ")[0]}`;
+      loginLink.setAttribute("href", "#logout");
+      loginLink.addEventListener("click", (e) => { e.preventDefault(); logout(); window.location.reload(); }, { once: true });
+      signupLink.style.display = "none";
+    } else {
+      loginLink.textContent = "Log in";
+      loginLink.setAttribute("href", "/login");
+      signupLink.style.display = "";
+    }
+  }
+  render();
+  authState.subscribe(render);
+  document.addEventListener("astro:after-swap", render);
+</script>

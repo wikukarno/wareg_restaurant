@@ -1,0 +1,10 @@
+{
+  "name": "Fish & Chips",
+  "slug": "fish-and-chips",
+  "category": "seafood",
+  "price": 78000,
+  "description": "Beer-battered barramundi fillets fried crisp, served with fat-cut fries and house tartare sauce.",
+  "image": "/images/seafood_4.jpg",
+  "rating": 4.7,
+  "tags": ["fried", "comfort"]
+}

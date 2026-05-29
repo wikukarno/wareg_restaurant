@@ -1,0 +1,10 @@
+{
+  "name": "Green Detox",
+  "slug": "green-detox",
+  "category": "juice",
+  "price": 30000,
+  "description": "Spinach, cucumber, green apple, and celery pressed together for a clean morning boost.",
+  "image": "/images/juices_7.jpg",
+  "rating": 4.6,
+  "tags": ["detox", "vegan"]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "Avocado Shake",
+  "slug": "avocado-shake",
+  "category": "juice",
+  "price": 25000,
+  "description": "Ripe Haas avocados blended with coconut milk and a drizzle of palm sugar.",
+  "image": "/images/juices_3.jpg",
+  "rating": 4.7,
+  "tags": ["creamy", "vegan"]
+}

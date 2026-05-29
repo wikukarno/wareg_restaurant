@@ -1,0 +1,11 @@
+{
+  "name": "Truffle Pasta",
+  "slug": "truffle-pasta",
+  "category": "healthy",
+  "price": 155000,
+  "description": "Fresh egg pappardelle tossed with black truffle paste, aged Parmigiano-Reggiano, and crispy shallots.",
+  "image": "/images/sp_3.jpg",
+  "rating": 4.8,
+  "tags": ["pasta", "chef pick"],
+  "isSpecial": true
+}

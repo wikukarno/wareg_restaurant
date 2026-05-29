@@ -1,0 +1,10 @@
+{
+  "name": "Mango Lassi",
+  "slug": "mango-lassi",
+  "category": "juice",
+  "price": 27000,
+  "description": "Thick Alphonso mango blended with creamy yogurt and a pinch of cardamom.",
+  "image": "/images/juices_2.jpg",
+  "rating": 4.9,
+  "tags": ["creamy", "tropical"]
+}

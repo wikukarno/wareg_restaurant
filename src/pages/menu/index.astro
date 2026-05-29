@@ -1,0 +1,108 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Container from "~/components/ui/Container.astro";
+import SectionHeading from "~/components/ui/SectionHeading.astro";
+import DishCard from "~/components/sections/DishCard.astro";
+import { getCollection } from "astro:content";
+import type { Category } from "~/lib/data";
+
+const all = await getCollection("menu");
+const cats: { id: Category | "all"; label: string }[] = [
+  { id: "all", label: "All" },
+  { id: "juice", label: "Juice" },
+  { id: "vegetable", label: "Vegetable" },
+  { id: "healthy", label: "Healthy" },
+  { id: "seafood", label: "Seafood" },
+];
+---
+<BaseLayout title="Menu" description="Browse the full Wareg menu — juices, vegetables, healthy food, and seafood.">
+  <section class="pt-12 pb-24">
+    <Container>
+      <SectionHeading
+        eyebrow="THE FULL MENU"
+        title={`Find food that fits <span class="italic">your taste</span>`}
+      />
+      <div class="mt-8 flex flex-wrap items-center gap-2" id="filter-bar" role="group" aria-label="Filter by category">
+        {cats.map((c) => (
+          <button
+            type="button"
+            data-cat={c.id}
+            class="rounded-full px-4 py-2 text-sm border border-[var(--color-line)] hover:bg-[var(--color-amber-50)] aria-pressed:bg-[var(--color-ink)] aria-pressed:text-white aria-pressed:border-[var(--color-ink)] transition-colors"
+            aria-pressed={c.id === "all" ? "true" : "false"}
+          >
+            {c.label}
+          </button>
+        ))}
+        <div class="ml-auto">
+          <label class="text-xs uppercase tracking-wider text-[var(--color-ink-soft)] mr-2">Sort</label>
+          <select id="sort-select" class="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm">
+            <option value="popular">Popular</option>
+            <option value="price-asc">Price ↑</option>
+            <option value="price-desc">Price ↓</option>
+          </select>
+        </div>
+      </div>
+      <div id="menu-grid" class="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+        {all.map((d) => (
+          <div data-item data-cat={d.data.category} data-price={d.data.price} data-rating={d.data.rating}>
+            <DishCard slug={d.data.slug} name={d.data.name} price={d.data.price} image={d.data.image} category={d.data.category} />
+          </div>
+        ))}
+      </div>
+    </Container>
+  </section>
+</BaseLayout>
+
+<script>
+  const params = new URLSearchParams(location.search);
+  const initialCat = params.get("cat") ?? "all";
+  const initialSort = (params.get("sort") as "popular" | "price-asc" | "price-desc" | null) ?? "popular";
+
+  const filterBar = document.getElementById("filter-bar")!;
+  const grid = document.getElementById("menu-grid")!;
+  const sortSelect = document.getElementById("sort-select") as HTMLSelectElement;
+  sortSelect.value = initialSort;
+
+  function applyFilter(cat: string) {
+    filterBar.querySelectorAll<HTMLButtonElement>("button[data-cat]").forEach((b) => {
+      b.setAttribute("aria-pressed", String(b.dataset.cat === cat));
+    });
+    grid.querySelectorAll<HTMLElement>("[data-item]").forEach((el) => {
+      el.style.display = cat === "all" || el.dataset.cat === cat ? "" : "none";
+    });
+  }
+
+  function applySort(sort: "popular" | "price-asc" | "price-desc") {
+    const items = Array.from(grid.children) as HTMLElement[];
+    items.sort((a, b) => {
+      if (sort === "popular") return Number(b.dataset.rating) - Number(a.dataset.rating);
+      if (sort === "price-asc") return Number(a.dataset.price) - Number(b.dataset.price);
+      return Number(b.dataset.price) - Number(a.dataset.price);
+    });
+    items.forEach((el) => grid.appendChild(el));
+  }
+
+  function pushUrl() {
+    const cat = filterBar.querySelector<HTMLButtonElement>("button[aria-pressed='true']")?.dataset.cat ?? "all";
+    const sort = sortSelect.value;
+    const next = new URLSearchParams();
+    if (cat !== "all") next.set("cat", cat);
+    if (sort !== "popular") next.set("sort", sort);
+    const qs = next.toString();
+    history.replaceState(null, "", qs ? `?${qs}` : location.pathname);
+  }
+
+  filterBar.addEventListener("click", (e) => {
+    const btn = (e.target as HTMLElement).closest("button[data-cat]") as HTMLButtonElement | null;
+    if (!btn) return;
+    applyFilter(btn.dataset.cat!);
+    pushUrl();
+  });
+  sortSelect.addEventListener("change", () => {
+    applySort(sortSelect.value as "popular" | "price-asc" | "price-desc");
+    pushUrl();
+  });
+
+  applyFilter(initialCat);
+  applySort(initialSort);
+</script>

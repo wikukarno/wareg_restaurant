@@ -1,0 +1,10 @@
+{
+  "name": "Lobster Roll",
+  "slug": "lobster-roll",
+  "category": "seafood",
+  "price": 165000,
+  "description": "Chilled Maine lobster tossed in lemon-herb mayo and piled into a toasted brioche split bun.",
+  "image": "/images/seafood_7.jpg",
+  "rating": 4.9,
+  "tags": ["premium", "signature"]
+}

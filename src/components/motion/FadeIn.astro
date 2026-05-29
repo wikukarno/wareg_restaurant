@@ -1,0 +1,55 @@
+---
+interface Props {
+  delay?: number;
+  duration?: number;
+  y?: number;
+  class?: string;
+  as?: string;
+}
+const { delay = 0, duration = 600, y = 16, class: className = "", as: Tag = "div" } = Astro.props;
+---
+<Tag
+  data-fade-in
+  data-delay={delay}
+  data-duration={duration}
+  style={`--fi-y: ${y}px`}
+  class={`opacity-0 will-change-[opacity,transform] ${className}`}
+>
+  <slot />
+</Tag>
+
+<style>
+  [data-fade-in] {
+    transform: translateY(var(--fi-y));
+    transition-property: opacity, transform;
+    transition-timing-function: cubic-bezier(0.2, 0.6, 0.2, 1);
+  }
+  [data-fade-in].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-fade-in] { opacity: 1 !important; transform: none !important; transition: none !important; }
+  }
+</style>
+
+<script>
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (!e.isIntersecting) continue;
+      const el = e.target as HTMLElement;
+      const delay = Number(el.dataset.delay ?? "0");
+      const duration = Number(el.dataset.duration ?? "600");
+      el.style.transitionDuration = `${duration}ms`;
+      el.style.transitionDelay = `${delay}ms`;
+      el.classList.add("is-visible");
+      io.unobserve(el);
+    }
+  }, { rootMargin: "0px 0px -10% 0px", threshold: 0.05 });
+
+  document.querySelectorAll<HTMLElement>("[data-fade-in]").forEach((el) => io.observe(el));
+
+  document.addEventListener("astro:after-swap", () => {
+    document.querySelectorAll<HTMLElement>("[data-fade-in]:not(.is-visible)").forEach((el) => io.observe(el));
+  });
+</script>

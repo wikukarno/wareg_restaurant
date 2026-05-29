@@ -1,0 +1,51 @@
+---
+import Container from "~/components/ui/Container.astro";
+import Icon from "~/components/icons/Icon.astro";
+const year = new Date().getFullYear();
+---
+<footer class="mt-24 border-t border-[var(--color-line)] bg-[var(--color-surface)]">
+  <Container class="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+    <div>
+      <p class="font-display text-2xl font-semibold">WAREG.</p>
+      <p class="mt-3 text-sm text-[var(--color-ink-soft)] max-w-xs leading-relaxed">
+        Modern Indonesian comfort food, crafted daily and served warm to your table.
+      </p>
+    </div>
+    <div>
+      <h4 class="text-sm font-semibold uppercase tracking-widest text-[var(--color-ink-soft)]">Menu</h4>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/menu?cat=juice" class="hover:text-[var(--color-amber-600)]">Juices</a></li>
+        <li><a href="/menu?cat=vegetable" class="hover:text-[var(--color-amber-600)]">Vegetables</a></li>
+        <li><a href="/menu?cat=healthy" class="hover:text-[var(--color-amber-600)]">Healthy Food</a></li>
+        <li><a href="/menu?cat=seafood" class="hover:text-[var(--color-amber-600)]">Seafood</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="text-sm font-semibold uppercase tracking-widest text-[var(--color-ink-soft)]">Company</h4>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a href="/#story" class="hover:text-[var(--color-amber-600)]">Our story</a></li>
+        <li><a href="/#chefs" class="hover:text-[var(--color-amber-600)]">Chefs</a></li>
+        <li><a href="/#reviews" class="hover:text-[var(--color-amber-600)]">Reviews</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="text-sm font-semibold uppercase tracking-widest text-[var(--color-ink-soft)]">Follow</h4>
+      <div class="mt-4 flex gap-3">
+        <a href="#" aria-label="Facebook" class="w-9 h-9 rounded-full border border-[var(--color-line)] inline-flex items-center justify-center hover:bg-[var(--color-amber-50)]"><Icon name="facebook" size={16} /></a>
+        <a href="#" aria-label="Instagram" class="w-9 h-9 rounded-full border border-[var(--color-line)] inline-flex items-center justify-center hover:bg-[var(--color-amber-50)]"><Icon name="instagram" size={16} /></a>
+        <a href="#" aria-label="Twitter" class="w-9 h-9 rounded-full border border-[var(--color-line)] inline-flex items-center justify-center hover:bg-[var(--color-amber-50)]"><Icon name="twitter" size={16} /></a>
+        <a href="#" aria-label="YouTube" class="w-9 h-9 rounded-full border border-[var(--color-line)] inline-flex items-center justify-center hover:bg-[var(--color-amber-50)]"><Icon name="youtube" size={16} /></a>
+      </div>
+      <div class="mt-5 flex flex-wrap items-center gap-3">
+        <img src="/images/social/Appstore.png" alt="Download on the App Store" class="h-9 max-w-full" />
+        <img src="/images/social/playstore.png" alt="Get it on Google Play" class="h-9 max-w-full" />
+      </div>
+    </div>
+  </Container>
+  <div class="border-t border-[var(--color-line)]">
+    <Container class="py-4 text-xs text-[var(--color-ink-soft)] flex flex-col md:flex-row gap-2 justify-between">
+      <p>© {year} Wareg Restaurant. Crafted with care.</p>
+      <p>Built by <a href="https://wikukarno.dev" target="_blank" rel="noopener" class="underline underline-offset-2 hover:text-[var(--color-amber-600)]">wikukarno.dev</a> — portfolio project.</p>
+    </Container>
+  </div>
+</footer>

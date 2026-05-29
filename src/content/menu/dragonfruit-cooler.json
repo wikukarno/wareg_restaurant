@@ -1,0 +1,10 @@
+{
+  "name": "Dragonfruit Cooler",
+  "slug": "dragonfruit-cooler",
+  "category": "juice",
+  "price": 28000,
+  "description": "Vivid pink dragonfruit blended with sparkling water and a hint of lychee syrup.",
+  "image": "/images/juices_5.jpg",
+  "rating": 4.8,
+  "tags": ["cold", "fruit"]
+}

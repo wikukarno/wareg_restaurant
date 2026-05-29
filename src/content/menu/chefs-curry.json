@@ -1,0 +1,11 @@
+{
+  "name": "Chef's Curry",
+  "slug": "chefs-curry",
+  "category": "vegetable",
+  "price": 95000,
+  "description": "The chef's rotating seasonal curry made from scratch with whatever's best at the market that day.",
+  "image": "/images/sp_5.jpg",
+  "rating": 4.9,
+  "tags": ["spicy", "chef pick"],
+  "isSpecial": true
+}

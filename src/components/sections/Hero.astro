@@ -1,0 +1,39 @@
+---
+import Container from "~/components/ui/Container.astro";
+import Button from "~/components/ui/Button.astro";
+import Icon from "~/components/icons/Icon.astro";
+import FadeIn from "~/components/motion/FadeIn.astro";
+import Rating from "~/components/ui/Rating.astro";
+---
+<section class="pt-12 md:pt-20 lg:pt-24">
+  <Container class="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center">
+    <FadeIn class="order-2 md:order-1">
+      <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-amber-600)]">
+        NEW · SPRING MENU
+      </p>
+      <h1 class="mt-4 font-display text-[clamp(2.75rem,7vw,5rem)] leading-[1.02] tracking-tight">
+        Eat well, <span class="italic font-light">live warm.</span>
+      </h1>
+      <p class="mt-5 text-lg text-[var(--color-ink-soft)] max-w-md leading-relaxed">
+        Modern Indonesian comfort food, crafted daily by chefs who actually eat what they cook.
+      </p>
+      <div class="mt-7 flex flex-wrap items-center gap-3">
+        <Button href="/menu" size="lg">Order now <Icon name="arrow-right" size={18} /></Button>
+        <Button href="/menu" variant="secondary" size="lg">See menu</Button>
+      </div>
+      <div class="mt-8 flex items-center gap-6 text-sm">
+        <Rating value={4.9} />
+        <span class="text-[var(--color-ink-soft)]">·</span>
+        <span class="text-[var(--color-ink-soft)]">1.2k+ orders this month</span>
+      </div>
+    </FadeIn>
+    <FadeIn class="order-1 md:order-2" delay={120}>
+      <div class="relative aspect-square max-w-[520px] mx-auto">
+        <div class="absolute inset-0 rounded-[2.5rem] rotate-[-3deg] bg-[var(--color-amber-50)]"></div>
+        <img src="/images/brand_hero.jpg" alt="Featured dish"
+          loading="eager" fetchpriority="high"
+          class="relative w-full h-full object-cover rounded-[2.5rem] rotate-[2deg] shadow-2xl" />
+      </div>
+    </FadeIn>
+  </Container>
+</section>

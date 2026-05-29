@@ -1,0 +1,55 @@
+---
+import "~/styles/global.css";
+import Navbar from "~/components/nav/Navbar.astro";
+import Footer from "~/components/sections/Footer.astro";
+import CartDrawer from "~/components/cart/CartDrawer.astro";
+import Toast from "~/components/ui/Toast.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+const {
+  title,
+  description = "Modern Indonesian comfort food, crafted daily and served warm.",
+  ogImage = "/social-preview.png",
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/images/logo/Logo.png" />
+    <title>{title} — Wareg</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={`${title} — Wareg`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(ogImage, Astro.site).toString()} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "name": "Wareg",
+      "image": new URL("/images/brand_hero.jpg", Astro.site).toString(),
+      "url": Astro.site?.toString(),
+      "servesCuisine": ["Indonesian", "Seafood", "Vegetarian"],
+      "priceRange": "$$",
+    })}></script>
+  </head>
+  <body class="min-h-dvh bg-[var(--color-bg)] text-[var(--color-ink)] flex flex-col">
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:rounded-md focus:bg-[var(--color-ink)] focus:text-white focus:px-3 focus:py-2">
+      Skip to content
+    </a>
+    <Navbar />
+    <main id="main" class="flex-1"><slot /></main>
+    <Footer />
+    <CartDrawer />
+    <Toast />
+  </body>
+</html>

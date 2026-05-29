@@ -1,0 +1,35 @@
+---
+import Container from "~/components/ui/Container.astro";
+import SectionHeading from "~/components/ui/SectionHeading.astro";
+import Rating from "~/components/ui/Rating.astro";
+import FadeIn from "~/components/motion/FadeIn.astro";
+import { getCollection } from "astro:content";
+const reviews = await getCollection("reviews");
+---
+<section id="reviews" class="py-16 md:py-24 bg-[var(--color-amber-50)]/50">
+  <Container>
+    <SectionHeading
+      align="center"
+      eyebrow="FROM OUR DINERS"
+      title={`What people say about <span class="italic">eating with us</span>`}
+      class="mx-auto"
+    />
+    <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+      {reviews.slice(0, 3).map((r, i) => (
+        <FadeIn delay={i * 80}>
+          <article class="h-full rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] p-6 flex flex-col">
+            <Rating value={r.data.rating} showNumber={false} />
+            <p class="mt-4 font-display text-xl leading-snug flex-1">"{r.data.body}"</p>
+            <footer class="mt-6 flex items-center gap-3">
+              <img src={r.data.avatar} alt="" class="w-10 h-10 rounded-full object-cover" />
+              <div>
+                <p class="text-sm font-medium">{r.data.name}</p>
+                <p class="text-xs text-[var(--color-ink-soft)]">{r.data.date}</p>
+              </div>
+            </footer>
+          </article>
+        </FadeIn>
+      ))}
+    </div>
+  </Container>
+</section>

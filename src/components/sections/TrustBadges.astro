@@ -1,0 +1,24 @@
+---
+import Container from "~/components/ui/Container.astro";
+import FadeIn from "~/components/motion/FadeIn.astro";
+const items = [
+  { img: "/images/about/disc_1.png", title: "Best Price", body: "Honest pricing, no surprises." },
+  { img: "/images/about/disc_2.png", title: "Fast Delivery", body: "On your table in 30 minutes or it's on us." },
+  { img: "/images/about/disc_3.png", title: "Fresh Daily", body: "Ingredients sourced and prepared same-day." },
+];
+---
+<section class="py-16 md:py-24">
+  <Container class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    {items.map((item, i) => (
+      <FadeIn delay={i * 80}>
+        <div class="flex items-center gap-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] p-5">
+          <img src={item.img} alt="" class="w-14 h-14 object-contain" />
+          <div>
+            <p class="font-display text-lg">{item.title}</p>
+            <p class="text-sm text-[var(--color-ink-soft)] mt-0.5">{item.body}</p>
+          </div>
+        </div>
+      </FadeIn>
+    ))}
+  </Container>
+</section>

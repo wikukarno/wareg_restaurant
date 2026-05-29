@@ -1,0 +1,11 @@
+{
+  "name": "Signature Burger",
+  "slug": "signature-burger",
+  "category": "healthy",
+  "price": 95000,
+  "description": "Double smash patty with house sauce, aged cheddar, caramelised onion, and house-made brioche bun.",
+  "image": "/images/sp_8.jpg",
+  "rating": 4.8,
+  "tags": ["signature", "chef pick"],
+  "isSpecial": true
+}

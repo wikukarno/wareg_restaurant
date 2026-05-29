@@ -1,0 +1,11 @@
+{
+  "name": "Wood-Fired Pizza",
+  "slug": "wood-fired-pizza",
+  "category": "seafood",
+  "price": 165000,
+  "description": "Neapolitan-style pizza topped with smoked salmon, capers, red onion, and crème fraîche, fired in our wood-burning oven.",
+  "image": "/images/sp_1.jpg",
+  "rating": 4.9,
+  "tags": ["signature", "chef pick"],
+  "isSpecial": true
+}
